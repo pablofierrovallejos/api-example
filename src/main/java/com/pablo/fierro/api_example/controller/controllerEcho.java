@@ -38,7 +38,7 @@ public class controllerEcho {
 
 
     @Autowired
-    private  IQrGen qrGen;
+    private IQrGen qrGen;
 
     @GetMapping("/echo")
     cliente echo() throws OutputException, BarcodeException {
@@ -46,8 +46,6 @@ public class controllerEcho {
         cli.setNombre("Pablo");
         cli.setApellido("Fierro");
         cli.setEdad(20);
-
-
         return cli;
     }
 
@@ -66,19 +64,6 @@ public class controllerEcho {
         return new MultipartImage(baos.toByteArray(), "imageName.jpg", "baos", MediaType.MULTIPART_FORM_DATA.toString(), baos.size());
     }
 
-    @GetMapping("/qr2disk")
-    void qr2disk() throws IOException {
-        BufferedImage bufferedImage = qrGen.generateQrCode("ricardogeek.com", 350, 350);
-        File codigoQR = new File("codigo-qr.jpg");
-        ImageIO.write(bufferedImage, "jpg", codigoQR);
-    }
-
-    @GetMapping("/c128-2disk")
-    void cod128toDisk() throws IOException, OutputException, BarcodeException {
-        BufferedImage bufferedImage = qrGen.generateCode128BarCodeImage("Pablo Fierro");
-        File codigo128 = new File("codigo-128.jpg");
-        ImageIO.write(bufferedImage, "jpg", codigo128);
-    }
 
     @GetMapping("/pdf417b/{sTexto}")
     MultipartFile pdf417(@PathVariable("sTexto") String sTexto) throws BarcodeException, OutputException, IOException {
@@ -96,6 +81,25 @@ public class controllerEcho {
 
         return new MultipartImage(baos.toByteArray(), "imageName.jpg", "baos", MediaType.MULTIPART_FORM_DATA.toString(), baos.size());
     }
+
+
+
+
+    @GetMapping("/qr2disk")
+    void qr2disk() throws IOException {
+        BufferedImage bufferedImage = qrGen.generateQrCode("ricardogeek.com", 350, 350);
+        File codigoQR = new File("codigo-qr.jpg");
+        ImageIO.write(bufferedImage, "jpg", codigoQR);
+    }
+
+    @GetMapping("/c128-2disk")
+    void cod128toDisk() throws IOException, OutputException, BarcodeException {
+        BufferedImage bufferedImage = qrGen.generateCode128BarCodeImage("Pablo Fierro");
+        File codigo128 = new File("codigo-128.jpg");
+        ImageIO.write(bufferedImage, "jpg", codigo128);
+    }
+
+
 
 
     @GetMapping(value = "/barcodes/{type}/{barcode}", produces = IMAGE_PNG_VALUE)
